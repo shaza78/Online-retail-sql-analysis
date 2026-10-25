@@ -1,0 +1,46 @@
+
+
+-- 1. total revenue
+SELECT ROUND(SUM(Quantity * UnitPrice), 2) AS total_revenue
+FROM "Online Retail"
+WHERE Quantity > 0 AND CustomerID IS NOT NULL;
+
+-- 2. top 10 products by quantity
+SELECT Description, SUM(Quantity) AS total_qty
+FROM "Online Retail"
+WHERE Quantity > 0
+GROUP BY Description
+ORDER BY total_qty DESC
+LIMIT 10;
+
+-- 3. top 5 countries by revenue
+SELECT Country, ROUND(SUM(Quantity * UnitPrice), 2) AS total_revenue
+FROM "Online Retail"
+WHERE Quantity > 0 AND CustomerID IS NOT NULL
+GROUP BY Country
+ORDER BY total_revenue DESC
+LIMIT 5;
+
+-- 4. repeat customers
+SELECT COUNT(*) AS repeat_customers
+FROM (
+SELECT CustomerID
+FROM "Online Retail"
+WHERE CustomerID IS NOT NULL AND Quantity > 0
+GROUP BY CustomerID
+HAVING COUNT(DISTINCT InvoiceNo) > 1
+);
+
+
+--5 monthly revenue
+
+SELECT
+substr(InvoiceDate, instr(InvoiceDate,'/') + instr(substr(InvoiceDate, instr(InvoiceDate,'/')+1), '/') + 1, 4) AS year,
+substr(InvoiceDate, 1, instr(InvoiceDate,'/')-1) AS month,
+ROUND(SUM(Quantity*UnitPrice), 2) AS revenue
+FROM "Online Retail"
+WHERE Quantity > 0 AND UnitPrice > 0
+GROUP BY year, month
+ORDER BY year, CAST(month AS INTEGER);
+
+

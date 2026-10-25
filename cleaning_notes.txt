@@ -1,0 +1,8 @@
+Online Retail dataset - cleaning notes
+Rows in raw data: 541,909
+Blank CustomerID: 135,080 (guest checkouts, kept, cannot be used for repeat buyers)
+Exact duplicate rows: 5,429 (same invoice, product, quantity, date - kept, noted, raw table untouched)
+Negative Quantity: 1,719 (returns, excluded from revenue queries)
+Countries: 38 (no inconsistent spellings)
+InvoiceDate format: consistent
+Decision: raw table kept as is, duplicates noted not deleted, real orders filtered with Quantity > 0 and CustomerID not null
